@@ -23,7 +23,8 @@ def main(sector: str, queueName: str) -> None:
     #
     #                       WRITE CODE HERE!!!
     #
-    
+    bindingKey = f'*.{sector}*.'
+    bindingKey.strip()
     consumer = mqConsumer(binding_key=bindingKey,exchange_name="Tech Lab Topic Exchange",queue_name=queueName)    
     consumer.startConsuming()
     
@@ -35,5 +36,21 @@ if __name__ == "__main__":
     #
     #                       WRITE CODE HERE!!!
     #
+    parser = argparse.ArgumentParser(
+        description="Process Stock Sector, And Queue Name."
+    )
 
-    sys.exit(main(sector,queue))
+    parser.add_argument(
+        "-s",
+        "--sector",
+        type=str,
+        help="Stock Sectors",
+        required=True,
+    )
+
+    parser.add_argument(
+        "-q", "--queue", type=str, help="Queue Name", required=True
+    )
+
+    args = parser.parse_args()
+    sys.exit(main(args.sector, args.queue))
